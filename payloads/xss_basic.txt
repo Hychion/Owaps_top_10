@@ -1,0 +1,8 @@
+# XSS detection probes — benign markers for authorized testing only
+# Each line is one payload. Lines starting with # are comments.
+<owasp-xss-probe>
+"owasp-xss-probe"
+'owasp-xss-probe'
+javascript:owaspProbe
+<script>/*owasp*/</script>
+<img src=x onerror=owaspProbe()>

@@ -1,0 +1,81 @@
+version: "3.9"
+
+# ============================================================
+# OWASP Tester — Full Development Environment (Top 10 labs)
+# Usage: docker compose up -d
+# ============================================================
+
+networks:
+  owasp-lab:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+services:
+
+  lab-a01:
+    build: { context: ./docker/lab-a01, dockerfile: Dockerfile }
+    container_name: owasp-lab-a01
+    ports: ["8081:5000"]
+    networks: { owasp-lab: { ipv4_address: 172.30.0.11 } }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 5s; timeout: 3s; retries: 5; start_period: 8s
+    labels: { owasp.top10: "A01:2021", owasp.name: "Broken Access Control" }
+
+  lab-a02:
+    build: { context: ./docker/lab-a02, dockerfile: Dockerfile }
+    container_name: owasp-lab-a02
+    ports: ["8082:5001"]
+    networks: { owasp-lab: { ipv4_address: 172.30.0.12 } }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://localhost:5001/health')"]
+      interval: 5s; timeout: 3s; retries: 5; start_period: 8s
+    labels: { owasp.top10: "A02:2021", owasp.name: "Cryptographic Failures" }
+
+  lab-a03:
+    build: { context: ./docker/lab-a03, dockerfile: Dockerfile }
+    container_name: owasp-lab-a03
+    ports: ["8083:5002"]
+    networks: { owasp-lab: { ipv4_address: 172.30.0.13 } }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://localhost:5002/health')"]
+      interval: 5s; timeout: 3s; retries: 5; start_period: 8s
+    labels: { owasp.top10: "A03:2021", owasp.name: "Injection" }
+
+  lab-a05:
+    build: { context: ./docker/lab-a05, dockerfile: Dockerfile }
+    container_name: owasp-lab-a05
+    ports: ["8085:5003"]
+    networks: { owasp-lab: { ipv4_address: 172.30.0.15 } }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://localhost:5003/health')"]
+      interval: 5s; timeout: 3s; retries: 5; start_period: 8s
+    labels: { owasp.top10: "A05:2021", owasp.name: "Security Misconfiguration" }
+
+  lab-a07:
+    build: { context: ./docker/lab-a07, dockerfile: Dockerfile }
+    container_name: owasp-lab-a07
+    ports: ["8087:5004"]
+    networks: { owasp-lab: { ipv4_address: 172.30.0.17 } }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://localhost:5004/health')"]
+      interval: 5s; timeout: 3s; retries: 5; start_period: 8s
+    labels: { owasp.top10: "A07:2021", owasp.name: "Authentication Failures" }
+
+  lab-a10:
+    build: { context: ./docker/lab-a10, dockerfile: Dockerfile }
+    container_name: owasp-lab-a10
+    ports: ["8090:5005"]
+    networks: { owasp-lab: { ipv4_address: 172.30.0.20 } }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://localhost:5005/health')"]
+      interval: 5s; timeout: 3s; retries: 5; start_period: 8s
+    labels: { owasp.top10: "A10:2021", owasp.name: "SSRF" }

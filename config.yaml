@@ -1,0 +1,23 @@
+# owasp-tester runtime configuration
+# Override any value with environment variables prefixed OWASP_TESTER_
+# e.g. OWASP_TESTER_HTTP_TIMEOUT=30
+
+http:
+  timeout_secs: 15
+  max_redirects: 10
+  user_agent: "owasp-tester/0.1.0 (authorized security assessment)"
+  verify_tls: true
+  # proxy: "http://127.0.0.1:8080"   # Uncomment to route through Burp Suite
+
+scanner:
+  concurrency: 5          # Number of modules running in parallel
+  delay_ms: 200           # Delay between requests (ms) — be polite
+  max_retries: 2
+
+reporting:
+  default_format: "terminal"  # terminal | json | html
+  output_dir: "./reports"
+
+logging:
+  level: "info"           # error | warn | info | debug | trace
+  format: "pretty"        # pretty | json

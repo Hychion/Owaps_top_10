@@ -1,0 +1,95 @@
+version: "3.9"
+
+# ============================================================
+# OWASP Tester — Test Environment (ephemeral, used by CI & testcontainers)
+# Ports mapped to high range to avoid conflicts with dev environment.
+# Usage: docker compose -f docker-compose.test.yml up -d
+# ============================================================
+
+networks:
+  owasp-test:
+    driver: bridge
+
+services:
+
+  test-lab-info:
+    build:
+      context: ./docker/lab-info
+      dockerfile: Dockerfile
+    container_name: owasp-test-info
+    ports:
+      - "19081:80"
+    networks:
+      - owasp-test
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 5s
+
+  test-lab-inpval:
+    build:
+      context: ./docker/lab-inpval
+      dockerfile: Dockerfile
+    container_name: owasp-test-inpval
+    ports:
+      - "19082:5000"
+    networks:
+      - owasp-test
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 8s
+
+  test-lab-sess:
+    build:
+      context: ./docker/lab-sess
+      dockerfile: Dockerfile
+    container_name: owasp-test-sess
+    ports:
+      - "19083:5001"
+    environment:
+      COOKIE_MODE: vulnerable
+    networks:
+      - owasp-test
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 8s
+
+  test-lab-sqli:
+    build:
+      context: ./docker/lab-sqli
+      dockerfile: Dockerfile
+    container_name: owasp-test-sqli
+    ports:
+      - "19084:5002"
+    networks:
+      - owasp-test
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5002/health')"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 8s
+
+  test-lab-authn:
+    build:
+      context: ./docker/lab-authn
+      dockerfile: Dockerfile
+    container_name: owasp-test-authn
+    ports:
+      - "19085:5003"
+    networks:
+      - owasp-test
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5003/health')"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 8s

@@ -1,0 +1,14 @@
+# SQL injection detection probes — for authorized testing only
+# Error-based detection probes (not data extraction)
+'
+''
+`
+`)
+'))
+"
+""
+;
+' OR '1'='1
+' OR 1=1--
+" OR 1=1--
+' AND 1=2--
